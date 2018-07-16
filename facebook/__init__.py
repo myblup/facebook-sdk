@@ -287,6 +287,9 @@ class GraphAPI(object):
         else:
             raise GraphAPIError('Maintype was not text, image, or querystring')
 
+        if result and isinstance(result, dict):
+            result['headers'] = headers
+
         if result and isinstance(result, dict) and result.get("error"):
             raise GraphAPIError(result)
         return result

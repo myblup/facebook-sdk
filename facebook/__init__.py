@@ -112,9 +112,9 @@ class GraphAPI(object):
             )["data"]
         return {x["permission"] for x in response if x["status"] == "granted"}
 
-    def get_object(self, id, **args):
+    def get_object(self, id, with_headers=False, **args):
         """Fetches the given object from the graph."""
-        return self.request("{0}/{1}".format(self.version, id), args)
+        return self.request("{0}/{1}".format(self.version, id), args, with_headers=with_headers)
 
     def get_objects(self, ids, **args):
         """Fetches all of the given object from the graph.
@@ -232,7 +232,7 @@ class GraphAPI(object):
             raise GraphAPIError("API version number not available")
 
     def request(
-            self, path, args=None, post_args=None, files=None, method=None):
+            self, path, args=None, post_args=None, files=None, method=None, with_headers=False):
         """Fetches the given path in the Graph API.
 
         We translate args to a valid query string. If post_args is
@@ -287,7 +287,7 @@ class GraphAPI(object):
         else:
             raise GraphAPIError('Maintype was not text, image, or querystring')
 
-        if result and isinstance(result, dict):
+        if with_headers and result and isinstance(result, dict):
             result['headers'] = headers
 
         if result and isinstance(result, dict) and result.get("error"):

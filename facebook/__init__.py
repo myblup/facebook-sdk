@@ -47,7 +47,7 @@ FACEBOOK_GRAPH_URL = "https://graph.facebook.com/"
 FACEBOOK_WWW_URL = "https://www.facebook.com/"
 FACEBOOK_OAUTH_DIALOG_PATH = "dialog/oauth?"
 VALID_API_VERSIONS = [
-    "2.6", "2.7", "2.8", "2.9", "2.10", "2.11", "2.12", "3.0"]
+    "2.6", "2.7", "2.8", "2.9", "2.10", "2.11", "2.12", "3.0", "3.1"]
 VALID_SEARCH_TYPES = ["place", "placetopic"]
 
 
@@ -245,6 +245,7 @@ class GraphAPI(object):
         if post_args is not None:
             method = "POST"
 
+            
         # Add `access_token` to post_args or args if it has not already been
         # included.
         if self.access_token:
@@ -291,6 +292,8 @@ class GraphAPI(object):
             result['headers'] = headers
 
         if result and isinstance(result, dict) and result.get("error"):
+            #import pdb; pdb.set_trace()
+            print("%s: error: %s - args: %s" % (__file__, result, args))
             raise GraphAPIError(result)
         return result
 
